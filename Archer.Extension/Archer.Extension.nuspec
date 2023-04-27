@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Archer.Extension</id>
+    <version>1.0.3</version>
+    <title>Archer.Extension</title>
+    <authors>tinghuanhsu</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <description>Archer.Extension</description>
+    <releaseNotes>Fix pack error</releaseNotes>
+    <copyright>Hsu Tinghuan</copyright>
+    <tags>encrypt decrypt extension</tags>
+  </metadata>
+</package>

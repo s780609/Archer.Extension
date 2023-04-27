@@ -162,7 +162,7 @@ namespace Archer.Extension
                 string[] propsName = list[j].GetPropsName(skipField);
                 string[] propsValue = list[j].GetPropsValue(skipField);
 
-                sql.Append($" INSERT INTO InsuranceAgents.dbo.{tableName} ");
+                sql.Append($" INSERT INTO dbo.{tableName} ");
                 sql.Append(" ( ");
 
                 for (int i = 0; i < propsName.Count(); i++)
@@ -206,7 +206,7 @@ namespace Archer.Extension
             string[] propsName = recordObject.GetPropsName(skipField);
             string[] propsValue = recordObject.GetPropsValue(skipField);
 
-            sql.Append($" INSERT INTO InsuranceAgents.dbo.{tableName} ");
+            sql.Append($" INSERT INTO dbo.{tableName} ");
             sql.Append(" ( ");
 
             for (int i = 0; i < propsName.Count(); i++)
