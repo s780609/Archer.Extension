@@ -267,5 +267,26 @@ namespace Archer.Extension
 
             return stream;
         }
+
+        public static string WrapInTransactSql(this string sqlScript)
+        {
+            return @$"BEGIN TRY 
+                      IF @@TRANCOUNT = 0
+                      BEGIN TRANSACTION;
+                      -- ************************
+                      -- sql script start
+                      {sqlScript}
+                      -- sql script end
+                      -- ************************
+                      IF @@TRANCOUNT = 1
+                      COMMIT TRANSACTION;
+                      END TRY 
+                      BEGIN CATCH 
+                      PRINT 'An error occurred: ' + ERROR_MESSAGE();
+                      IF @@TRANCOUNT > 0
+                      ROLLBACK TRANSACTION;
+                      THROW;
+                      END CATCH";
+        }
     }
 }
