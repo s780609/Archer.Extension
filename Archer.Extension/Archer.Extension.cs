@@ -7,29 +7,44 @@ namespace Archer.Extension
 {
     public static class ExtensionMethods
     {
-        public static Exception? ThrowIfNull(this object obj, string message)
+        public static Exception? ThrowIfNull(this object checkTarget, string message = "")
         {
-            if (obj is null)
+            if (checkTarget is null)
             {
-                throw new Exception(message);
+                throw new Exception(message == string.Empty ? $"{nameof(checkTarget)} is null" : message);
             }
 
             return null;
         }
 
-        public static Exception? ThrowIfNullOrWhiteSpace(this string checkString, string message = "")
+        public static Exception? ThrowIfNullOrWhiteSpace(this string checkTarget, string message = "")
         {
-            if (string.IsNullOrWhiteSpace(checkString))
+            if (string.IsNullOrWhiteSpace(checkTarget))
             {
-                throw new Exception(message != string.Empty ? message : "NullOrWhiteSpace");
+                throw new Exception(message != string.Empty ? message : $"{nameof(checkTarget)} is NullOrWhiteSpace");
             }
 
             return null;
         }
 
-        public static Exception? ThrowIfNullOrEmpty(this string checkString, string message)
+        public static Exception? ThrowIfNullOrEmpty(this string checkTarget, string message)
         {
-            if (string.IsNullOrEmpty(checkString))
+            if (string.IsNullOrEmpty(checkTarget))
+            {
+                throw new Exception(message != string.Empty ? message : $"{nameof(checkTarget)} is NullOrWhiteSpace");
+            }
+
+            return null;
+        }
+
+        public static Exception? ThrowIfZero(this object[] checkTarget, string message = "")
+        {
+            if (message == string.Empty)
+            {
+                message = $"{nameof(checkTarget)}'s length is zero.";
+            }
+
+            if (checkTarget.Count() == 0)
             {
                 throw new Exception(message);
             }
