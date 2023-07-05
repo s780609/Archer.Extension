@@ -125,7 +125,7 @@ namespace Archer.Extension
         /// </summary>
         /// <param name="password">密碼明文</param>
         /// <returns></returns>
-        private static byte[] GetSha256Hash(string password)
+        public byte[] GetSha256Hash(string password)
         {
             byte[] bytes = Encoding.Unicode.GetBytes(password);
             SHA256 sha256 = SHA256.Create();
