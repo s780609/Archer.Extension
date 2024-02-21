@@ -82,7 +82,7 @@ namespace Archer.Extension
                 var outputBytes = new byte[cipher.GetOutputSize(inputBytes.Length)];
                 var length = cipher.ProcessBytes(inputBytes, outputBytes, 0);
 
-                //Do the final block
+                // Do the final block
                 cipher.DoFinal(outputBytes, length);
 
                 return Encoding.UTF8.GetString(outputBytes).Split('\0')[0];

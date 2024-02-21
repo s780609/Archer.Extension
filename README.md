@@ -1,5 +1,5 @@
 # Archer.Extension
-一些常用的東西
+NUGET package | UITC每個專案都會用的方法獨立出來放這
 
 ## Using
 ```C#
@@ -30,6 +30,17 @@ string connectionString = "connection string";
 string encryptedConnectionString = helper.EncryptConn(connectionString);
 string decryptedConnectionString = helper.DecryptConn(encryptedConnectionString);
 ```
+
+## JwtHelper
+| function name | paramter type | return type | description |
+| --- | --- | --- | --- |
+| GenerateToken | object | Exception? | Generate token by token model
+| ValidateToken | string | bool | validate token |
+
+## DatabaseHelper
+| function name | paramter type | return type | description |
+| --- | --- | --- | --- |
+| CreateConnectionBy | string, DatabaseTypeEnum | IDbConnection | create IDbConnection by connection string |
 
 ## Extension method  
 
