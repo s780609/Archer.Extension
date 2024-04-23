@@ -7,7 +7,7 @@ using Org.BouncyCastle.Security;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Archer.Extension
+namespace Archer.Extension.SecurityHelper
 {
     /// <summary>
     /// keyConn: 加密金鑰, ivConn: 初始向量 </br>

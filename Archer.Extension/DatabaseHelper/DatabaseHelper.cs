@@ -8,22 +8,47 @@ namespace Archer.Extension.DatabaseHelper
     public class DatabaseHelper
     {
         private IConfiguration _configuration;
-        private IDbConnection _dbConnection;
-        private readonly SecurityHelper _securityHelp;
+        private readonly SecurityHelper.SecurityHelper _securityHelp;
 
-        public DatabaseHelper(IDbConnection dbConnection)
+        public DatabaseHelper(SecurityHelper.SecurityHelper securityHelp)
         {
-            _dbConnection = dbConnection;
+            _securityHelp = securityHelp;
         }
 
-        public DatabaseHelper(IConfiguration configuration, SecurityHelper securityHelp)
+        public DatabaseHelper(IConfiguration configuration, SecurityHelper.SecurityHelper securityHelp)
         {
             _configuration = configuration;
             _securityHelp = securityHelp;
         }
 
         /// <summary>
-        /// connection names are in the appsettings.json
+        /// create connection
+        /// </summary>
+        /// <param name="databaseType">DB</param>
+        /// <param name="connectionString">connectionString</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public IDbConnection CreateIDbConnection(string connectionString, DatabaseType databaseType = DatabaseType.SQLServer)
+        {
+            CreateConnection createConnection;
+
+            switch (databaseType)
+            {
+                case DatabaseType.SQLServer:
+                    createConnection = CreateSqlConnection;
+                    break;
+                case DatabaseType.SQLite:
+                    createConnection = CreateSqliteConnection;
+                    break;
+                default:
+                    throw new ArgumentException($"{nameof(databaseType)} not found");
+            }
+
+            return createConnection(connectionString);
+        }
+
+        /// <summary>
+        /// create connection by appsetting's conenction name
         /// </summary>
         /// <param name="databaseType"></param>
         /// <param name="connectionName"></param>
@@ -31,11 +56,6 @@ namespace Archer.Extension.DatabaseHelper
         /// <exception cref="ArgumentException"></exception>
         public IDbConnection CreateConnectionBy(string connectionName, DatabaseType databaseType = DatabaseType.SQLServer)
         {
-            if (_dbConnection != null)
-            {
-                return _dbConnection;
-            }
-
             string conn = _configuration.GetConnectionString(connectionName);
 
             if (string.IsNullOrWhiteSpace(conn))
