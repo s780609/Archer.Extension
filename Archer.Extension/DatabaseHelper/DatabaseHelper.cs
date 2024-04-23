@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Data;
 
 namespace Archer.Extension.DatabaseHelper

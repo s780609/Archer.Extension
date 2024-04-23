@@ -1,43 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace Archer.Extension
 {
     public static class ExtensionMethods
     {
-        public static Exception? ThrowIfNull(this object checkTarget, string message = "")
+        public static void ThrowIfNull(this object checkTarget, string message = "")
         {
             if (checkTarget is null)
             {
                 throw new Exception(message == string.Empty ? $"{nameof(checkTarget)} is null" : message);
             }
-
-            return null;
         }
 
-        public static Exception? ThrowIfNullOrWhiteSpace(this string checkTarget, string message = "")
+        public static void ThrowIfNullOrWhiteSpace(this string checkTarget, string message = "")
         {
             if (string.IsNullOrWhiteSpace(checkTarget))
             {
                 throw new Exception(message != string.Empty ? message : $"{nameof(checkTarget)} is NullOrWhiteSpace");
             }
-
-            return null;
         }
 
-        public static Exception? ThrowIfNullOrEmpty(this string checkTarget, string message)
+        public static void ThrowIfNullOrEmpty(this string checkTarget, string message)
         {
             if (string.IsNullOrEmpty(checkTarget))
             {
                 throw new Exception(message != string.Empty ? message : $"{nameof(checkTarget)} is NullOrWhiteSpace");
             }
-
-            return null;
         }
 
-        public static Exception? ThrowIfZero(this object[] checkTarget, string message = "")
+        public static void ThrowIfZero(this object[] checkTarget, string message = "")
         {
             if (message == string.Empty)
             {
@@ -48,8 +48,6 @@ namespace Archer.Extension
             {
                 throw new Exception(message);
             }
-
-            return null;
         }
 
         public static async Task CopyProxyHttpResponse(this HttpContext context, HttpResponseMessage responseMessage)
@@ -81,7 +79,7 @@ namespace Archer.Extension
             }
         }
 
-        public static string[] GetPropsName(this object dataObject, string[]? skipProp = null)
+        public static string[] GetPropsName(this object dataObject, string[] skipProp = null)
         {
             Type dataType = dataObject.GetType();
             IList<PropertyInfo> props = new List<PropertyInfo>(dataType.GetProperties());
@@ -97,7 +95,7 @@ namespace Archer.Extension
                         continue;
                 }
 
-                object? propValue = props[i].Name;
+                object propValue = props[i].Name;
 
                 if (propValue != null)
                 {
@@ -115,7 +113,7 @@ namespace Archer.Extension
             return temp.ToArray();
         }
 
-        public static string?[] GetPropsValue(this object dataObject, string[]? skipProp = null, string dateTimeValueFormat = "yyyy-MM-dd HH:mm:ss.fff")
+        public static string[] GetPropsValue(this object dataObject, string[] skipProp = null, string dateTimeValueFormat = "yyyy-MM-dd HH:mm:ss.fff")
         {
             Type dataType = dataObject.GetType();
             IList<PropertyInfo> props = new List<PropertyInfo>(dataType.GetProperties());
@@ -131,7 +129,7 @@ namespace Archer.Extension
                         continue;
                 }
 
-                object? propValue = props[i].GetValue(dataObject, null);
+                object propValue = props[i].GetValue(dataObject, null);
 
                 if (propValue != null)
                 {
@@ -152,7 +150,7 @@ namespace Archer.Extension
                 count = count + 1;
             }
 
-            string?[] temp = new string[hashtable.Count];
+            string[] temp = new string[hashtable.Count];
             for (int i = 0; i < hashtable.Count; i++)
             {
                 if (hashtable[i] == null)
@@ -168,7 +166,7 @@ namespace Archer.Extension
             return temp;
         }
 
-        public static string GetInsertSqlScript<T>(this List<T> list, string tableName, string[]? skipField = null)
+        public static string GetInsertSqlScript<T>(this List<T> list, string tableName, string[] skipField = null)
         {
             StringBuilder sql = new StringBuilder();
 
@@ -214,7 +212,7 @@ namespace Archer.Extension
             return sql.ToString();
         }
 
-        public static string GetInsertSqlScript<T>(this T recordObject, string tableName, string[]? skipField = null)
+        public static string GetInsertSqlScript<T>(this T recordObject, string tableName, string[] skipField = null)
         {
             StringBuilder sql = new StringBuilder();
 
@@ -270,7 +268,7 @@ namespace Archer.Extension
 
         public static string WrapInTransactSql(this string sqlScript)
         {
-            return @$"BEGIN TRY 
+            return $@"BEGIN TRY 
                       IF @@TRANCOUNT = 0
                       BEGIN TRANSACTION;
                       -- ************************

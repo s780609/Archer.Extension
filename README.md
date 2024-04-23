@@ -1,6 +1,9 @@
 # Archer.Extension
 NUGET package | UITC每個專案都會用的方法獨立出來放這
 
+## .Net version
+.NET Standard 2.0
+
 ## Using
 ```C#
 using Archer.Extension

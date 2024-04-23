@@ -1,4 +1,6 @@
-﻿namespace Archer.Extension.Models
+﻿using System;
+
+namespace Archer.Extension.Models
 {
     public class TokenModel
     {
