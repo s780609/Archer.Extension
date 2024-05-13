@@ -286,5 +286,19 @@ namespace Archer.Extension
                       THROW;
                       END CATCH";
         }
+
+        public static string Left(this string target, int digit)
+        {
+            return target.Substring(0, Math.Min(digit, target.Length));
+        }
+
+        public static string Right(this string target, int digit)
+        {
+            int startIndex = target.Length - digit;
+
+            startIndex = Math.Min(digit, startIndex);
+
+            return target.Substring(startIndex);
+        }
     }
 }
