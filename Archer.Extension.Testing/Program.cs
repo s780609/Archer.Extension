@@ -7,7 +7,7 @@ using System.Data;
 using Microsoft.Extensions.Configuration;
 using Archer.Extension.Models;
 using System.Drawing;
-using Archer.Extension.WatermarkHelper;
+using Archer.Extension.Images;
 
 Console.WriteLine("Archer.Extension.Testing Start...");
 
