@@ -2,9 +2,82 @@
 using Archer.Extension;
 using Archer.Extension.DatabaseHelper;
 using Archer.Extension.SecurityHelper;
+using Archer.Extension.JwtHelper;
 using System.Data;
+using Microsoft.Extensions.Configuration;
+using Archer.Extension.Models;
+using System.Drawing;
+using Archer.Extension.WatermarkHelper;
 
 Console.WriteLine("Archer.Extension.Testing Start...");
+
+IConfiguration config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
+
+var issuer = config.GetValue<string>("JwtSettings:Issuer");
+var aaa = config.GetValue<string>("UBOL_API");
+
+// read images from D:\暫時\IMG_0123.jpg into base64Images
+
+// read D:\暫時\IMG_0123.jpg
+string base64Image = string.Empty;
+using (FileStream fs = new FileStream(@"D:\暫時\IMG_0123.jpg", FileMode.Open, FileAccess.Read))
+{
+    byte[] buffer = new byte[fs.Length];
+    fs.Read(buffer, 0, buffer.Length);
+
+    base64Image = Convert.ToBase64String(buffer);
+}
+
+WatermarkHelper watermarkHelper = new WatermarkHelper();
+
+string[] watermarkImages = watermarkHelper.AddWatermarkToImages(new string[] { base64Image },
+    "僅限聯邦銀行業務使用",
+    new Font("微軟雅黑", 50, FontStyle.Bold, GraphicsUnit.Pixel),
+    Color.FromArgb(127, 0, 153, 153),
+    WatermarkPosition.MiddleCenter);
+
+// save watermarkImages to D:\暫時\IMG_0123_watermarked.jpg
+for (int i = 0; i < watermarkImages.Length; i++)
+{
+    byte[] buffer = Convert.FromBase64String(watermarkImages[i]);
+
+    using (FileStream fs = new FileStream($@"D:\暫時\IMG_0123_watermarked_{i}.jpg", FileMode.Create, FileAccess.Write))
+    {
+        fs.Write(buffer, 0, buffer.Length);
+    }
+}
+
+//string base64Image = "your_base64_image_string";
+Color watermarkColor = Color.FromArgb(127, 0, 153, 153); // 半透明白色
+int threshold = 100; // 顏色相似度閾值
+
+string removedResult = watermarkHelper.RemoveWatermark(watermarkImages[0], watermarkColor, threshold);
+
+byte[] buffer2 = Convert.FromBase64String(removedResult);
+
+using (FileStream fs2 = new FileStream($@"D:\暫時\IMG_0123_watermarked_removedResult.jpg", FileMode.Create, FileAccess.Write))
+{
+    fs2.Write(buffer2, 0, buffer2.Length);
+}
+
+Console.WriteLine("END");
+Console.ReadLine();
+
+JwtHelper jwtHelper = new JwtHelper(config);
+
+TokenModel tokenModel = new TokenModel();
+tokenModel.EmployeeNo = "totalwar";
+tokenModel.EmployeeName = "WhosYourDaddy";
+tokenModel.Roles = new string[] { "1" };
+tokenModel.NotValidBefore = DateTime.Now;
+tokenModel.IssuedAt = DateTime.Now.AddHours(1);
+tokenModel.ExpirationTime = DateTime.Now.AddHours(1);
+
+string token = jwtHelper.GenerateToken(tokenModel);
+
+bool a = jwtHelper.ValidateToken(token);
 
 const string keyConn = "AAA";
 const string ivConn = "BBB";

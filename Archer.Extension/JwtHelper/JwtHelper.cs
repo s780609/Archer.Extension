@@ -119,7 +119,9 @@ namespace Archer.Extension.JwtHelper
                 ValidateIssuer = true,
                 ValidIssuer = _configuration.GetValue<string>("JwtSettings:Issuer"),
                 ValidAudience = null,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("JwtSettings:SignKey"))) // The same key as the one that generate the token
+
+                // The same key as the one that generate the token
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("JwtSettings:SignKey")))
             };
         }
     }
