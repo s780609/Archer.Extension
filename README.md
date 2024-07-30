@@ -45,6 +45,54 @@ string decryptedConnectionString = helper.DecryptConn(encryptedConnectionString)
 | --- | --- | --- | --- |
 | CreateConnectionBy | string, DatabaseTypeEnum | IDbConnection | create IDbConnection by connection string |
 
+## WatermarkHelper
+命名空間: `Archer.Extension.Images`
+
+| function name | description |
+| --- | --- | --- | --- |
+| AddWatermarkToImages | 給圖片增加浮水印 |
+| RemoveWatermark | [實驗性功能] 移除浮水印 |
+
+### 給圖片增加浮水印
+```C#
+using Archer.Extension.Images;
+
+string base64Image = string.Empty;
+using (FileStream fs = new FileStream(@"D:\暫時\IMG_0123.jpg", FileMode.Open, FileAccess.Read))
+{
+    byte[] buffer = new byte[fs.Length];
+    fs.Read(buffer, 0, buffer.Length);
+
+    base64Image = Convert.ToBase64String(buffer);
+}
+
+WatermarkHelper watermarkHelper = new WatermarkHelper();
+
+string[] watermarkImages = watermarkHelper.AddWatermarkToImages(new string[] { base64Image },
+    "僅限聯邦銀行業務使用",
+    new Font(FontFamily.GenericSerif, 50, FontStyle.Bold, GraphicsUnit.Pixel),
+    Color.FromArgb(127, 0, 153, 153),
+    WatermarkPosition.MiddleCenter);
+```
+
+### 移除浮水印
+```C#
+// 浮水印顏色
+Color watermarkColor = Color.FromArgb(127, 0, 153, 153);
+
+// 顏色相似度閾值
+int threshold = 100;
+
+string removedResult = watermarkHelper.RemoveWatermark(watermarkImages[0], watermarkColor, threshold);
+
+byte[] buffer2 = Convert.FromBase64String(removedResult);
+
+using (FileStream fs2 = new FileStream($@"D:\暫時\IMG_0123_watermarked_removedResult.jpg", FileMode.Create, FileAccess.Write))
+{
+    fs2.Write(buffer2, 0, buffer2.Length);
+}
+```
+
 ## Extension method  
 
 Some useful extension method  

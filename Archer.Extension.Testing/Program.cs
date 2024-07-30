@@ -18,8 +18,6 @@ IConfiguration config = new ConfigurationBuilder()
 var issuer = config.GetValue<string>("JwtSettings:Issuer");
 var aaa = config.GetValue<string>("UBOL_API");
 
-// read images from D:\暫時\IMG_0123.jpg into base64Images
-
 // read D:\暫時\IMG_0123.jpg
 string base64Image = string.Empty;
 using (FileStream fs = new FileStream(@"D:\暫時\IMG_0123.jpg", FileMode.Open, FileAccess.Read))
@@ -34,7 +32,7 @@ WatermarkHelper watermarkHelper = new WatermarkHelper();
 
 string[] watermarkImages = watermarkHelper.AddWatermarkToImages(new string[] { base64Image },
     "僅限聯邦銀行業務使用",
-    new Font("微軟雅黑", 50, FontStyle.Bold, GraphicsUnit.Pixel),
+    new Font(FontFamily.GenericSerif, 50, FontStyle.Bold, GraphicsUnit.Pixel),
     Color.FromArgb(127, 0, 153, 153),
     WatermarkPosition.MiddleCenter);
 
@@ -49,9 +47,11 @@ for (int i = 0; i < watermarkImages.Length; i++)
     }
 }
 
-//string base64Image = "your_base64_image_string";
-Color watermarkColor = Color.FromArgb(127, 0, 153, 153); // 半透明白色
-int threshold = 100; // 顏色相似度閾值
+// 浮水印顏色
+Color watermarkColor = Color.FromArgb(127, 0, 153, 153);
+
+// 顏色相似度閾值
+int threshold = 100;
 
 string removedResult = watermarkHelper.RemoveWatermark(watermarkImages[0], watermarkColor, threshold);
 
