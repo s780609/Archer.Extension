@@ -18,7 +18,6 @@ IConfiguration config = new ConfigurationBuilder()
 var issuer = config.GetValue<string>("JwtSettings:Issuer");
 var aaa = config.GetValue<string>("UBOL_API");
 
-// read D:\暫時\IMG_0123.jpg
 string base64Image = string.Empty;
 using (FileStream fs = new FileStream(@"D:\暫時\IMG_0123.jpg", FileMode.Open, FileAccess.Read))
 {
@@ -31,12 +30,11 @@ using (FileStream fs = new FileStream(@"D:\暫時\IMG_0123.jpg", FileMode.Open, 
 WatermarkHelper watermarkHelper = new WatermarkHelper();
 
 string[] watermarkImages = watermarkHelper.AddWatermarkToImages(new string[] { base64Image },
-    "僅限聯邦銀行業務使用",
+    "想按摩師傅的小腿肚，嘿嘿嘿",
     new Font(FontFamily.GenericSerif, 50, FontStyle.Bold, GraphicsUnit.Pixel),
     Color.FromArgb(127, 0, 153, 153),
     WatermarkPosition.MiddleCenter);
 
-// save watermarkImages to D:\暫時\IMG_0123_watermarked.jpg
 for (int i = 0; i < watermarkImages.Length; i++)
 {
     byte[] buffer = Convert.FromBase64String(watermarkImages[i]);

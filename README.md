@@ -69,7 +69,7 @@ using (FileStream fs = new FileStream(@"D:\暫時\IMG_0123.jpg", FileMode.Open, 
 WatermarkHelper watermarkHelper = new WatermarkHelper();
 
 string[] watermarkImages = watermarkHelper.AddWatermarkToImages(new string[] { base64Image },
-    "僅限聯邦銀行業務使用",
+    "想按摩師傅的小腿肚，嘿嘿嘿",
     new Font(FontFamily.GenericSerif, 50, FontStyle.Bold, GraphicsUnit.Pixel),
     Color.FromArgb(127, 0, 153, 153),
     WatermarkPosition.MiddleCenter);
