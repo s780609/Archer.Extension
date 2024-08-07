@@ -19,7 +19,7 @@ var issuer = config.GetValue<string>("JwtSettings:Issuer");
 var aaa = config.GetValue<string>("UBOL_API");
 
 string base64Image = string.Empty;
-using (FileStream fs = new FileStream(@"D:\暫時\IMG_0123.jpg", FileMode.Open, FileAccess.Read))
+using (FileStream fs = new FileStream(@"D:\暫時\未命名.jpg", FileMode.Open, FileAccess.Read))
 {
     byte[] buffer = new byte[fs.Length];
     fs.Read(buffer, 0, buffer.Length);
@@ -30,8 +30,8 @@ using (FileStream fs = new FileStream(@"D:\暫時\IMG_0123.jpg", FileMode.Open, 
 WatermarkHelper watermarkHelper = new WatermarkHelper();
 
 string[] watermarkImages = watermarkHelper.AddWatermarkToImages(new string[] { base64Image },
-    "想按摩師傅的小腿肚，嘿嘿嘿",
-    new Font(FontFamily.GenericSerif, 50, FontStyle.Bold, GraphicsUnit.Pixel),
+    "僅限聯邦銀行業務使用",
+    new Font(FontFamily.GenericSerif, 150, FontStyle.Bold, GraphicsUnit.Pixel),
     Color.FromArgb(127, 0, 153, 153),
     WatermarkPosition.MiddleCenter);
 
@@ -39,26 +39,26 @@ for (int i = 0; i < watermarkImages.Length; i++)
 {
     byte[] buffer = Convert.FromBase64String(watermarkImages[i]);
 
-    using (FileStream fs = new FileStream($@"D:\暫時\IMG_0123_watermarked_{i}.jpg", FileMode.Create, FileAccess.Write))
+    using (FileStream fs = new FileStream($@"D:\暫時\未命名_watermarked_{i}.jpg", FileMode.Create, FileAccess.Write))
     {
         fs.Write(buffer, 0, buffer.Length);
     }
 }
 
-// 浮水印顏色
-Color watermarkColor = Color.FromArgb(127, 0, 153, 153);
+//// 浮水印顏色
+//Color watermarkColor = Color.FromArgb(127, 0, 153, 153);
 
-// 顏色相似度閾值
-int threshold = 100;
+//// 顏色相似度閾值
+//int threshold = 100;
 
-string removedResult = watermarkHelper.RemoveWatermark(watermarkImages[0], watermarkColor, threshold);
+//string removedResult = watermarkHelper.RemoveWatermark(watermarkImages[0], watermarkColor, threshold);
 
-byte[] buffer2 = Convert.FromBase64String(removedResult);
+//byte[] buffer2 = Convert.FromBase64String(removedResult);
 
-using (FileStream fs2 = new FileStream($@"D:\暫時\IMG_0123_watermarked_removedResult.jpg", FileMode.Create, FileAccess.Write))
-{
-    fs2.Write(buffer2, 0, buffer2.Length);
-}
+//using (FileStream fs2 = new FileStream($@"D:\暫時\未命名_watermarked_removedResult.jpg", FileMode.Create, FileAccess.Write))
+//{
+//    fs2.Write(buffer2, 0, buffer2.Length);
+//}
 
 Console.WriteLine("END");
 Console.ReadLine();

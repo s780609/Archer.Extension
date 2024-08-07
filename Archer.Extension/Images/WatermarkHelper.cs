@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -17,7 +18,7 @@ namespace Archer.Extension.Images
         /// <param name="textColor"></param>
         /// <param name="position"></param>
         /// <returns>base64字串圖片陣列</returns>
-        public string[] AddWatermarkToImages(string[] base64Images, string watermarkText, Font font, Color textColor, WatermarkPosition position)
+        public string[] AddWatermarkToImages(string[] base64Images, string watermarkText, Font font, Color textColor, WatermarkPosition position, ImageFormatEnum imageFormat = ImageFormatEnum.Jpeg)
         {
             string[] watermarkedImages = new string[base64Images.Length];
             for (int i = 0; i < base64Images.Length; i++)
@@ -94,7 +95,9 @@ namespace Archer.Extension.Images
 
                     using (MemoryStream outputMs = new MemoryStream())
                     {
-                        image.Save(outputMs, ImageFormat.Png);
+                        ImageFormat imgFormat = GetImageFormatFrom(imageFormat);
+
+                        image.Save(outputMs, imgFormat);
                         watermarkedImages[i] = Convert.ToBase64String(outputMs.ToArray());
                     }
                 }
@@ -177,6 +180,35 @@ namespace Archer.Extension.Images
 
             return Color.FromArgb(totalR / count, totalG / count, totalB / count);
         }
+
+        private ImageFormat GetImageFormatFrom(ImageFormatEnum imageFormat)
+        {
+            switch (imageFormat)
+            {
+                case ImageFormatEnum.Jpeg:
+                    return ImageFormat.Jpeg;
+                case ImageFormatEnum.Png:
+                    return ImageFormat.Png;
+                case ImageFormatEnum.Gif:
+                    return ImageFormat.Gif;
+                case ImageFormatEnum.Bmp:
+                    return ImageFormat.Bmp;
+                case ImageFormatEnum.Tiff:
+                    return ImageFormat.Tiff;
+                case ImageFormatEnum.Icon:
+                    return ImageFormat.Icon;
+                case ImageFormatEnum.Emf:
+                    return ImageFormat.Emf;
+                case ImageFormatEnum.Wmf:
+                    return ImageFormat.Wmf;
+                case ImageFormatEnum.Exif:
+                    return ImageFormat.Exif;
+                case ImageFormatEnum.MemoryBmp:
+                    return ImageFormat.MemoryBmp;
+                default:
+                    return ImageFormat.Jpeg;
+            }
+        }
     }
 
     public enum WatermarkPosition
@@ -190,5 +222,19 @@ namespace Archer.Extension.Images
         BottomLeft,
         BottomCenter,
         BottomRight
+    }
+
+    public enum ImageFormatEnum
+    {
+        Jpeg,
+        Png,
+        Gif,
+        Bmp,
+        Tiff,
+        Icon,
+        Emf,
+        Wmf,
+        Exif,
+        MemoryBmp
     }
 }
