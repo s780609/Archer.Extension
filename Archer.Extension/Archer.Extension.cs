@@ -312,6 +312,13 @@ namespace Archer.Extension
 
             DescriptionAttribute attribute = field.GetCustomAttribute<DescriptionAttribute>();
 
+            string description = attribute?.Description;
+
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                description = value.ToString();
+            }
+
             return attribute?.Description ?? value.ToString();
         }
 
@@ -332,6 +339,13 @@ namespace Archer.Extension
 
             // 取得 Description 特性
             DescriptionAttribute attribute = field.GetCustomAttribute<DescriptionAttribute>();
+
+            string description = attribute?.Description;
+
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                description = Enum.GetName(enumType, value) ?? value.ToString();
+            }
 
             return attribute?.Description ?? value.ToString() ?? string.Empty;
         }

@@ -11,6 +11,8 @@ using Archer.Extension.Images;
 
 Console.WriteLine("Archer.Extension.Testing Start...");
 
+Test.BottomLeft.GetDescription();
+
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
@@ -339,4 +341,17 @@ public class Loan
     public string ModifySupervisor { get; set; } = null;
 
     public bool? IsApp { get; set; }
+}
+
+public enum Test
+{
+    TopLeft,
+    TopCenter,
+    TopRight,
+    MiddleLeft,
+    MiddleCenter,
+    MiddleRight,
+    BottomLeft,
+    BottomCenter,
+    BottomRight
 }

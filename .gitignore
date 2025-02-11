@@ -9,7 +9,6 @@
 # ignore folder & files
 Archer.Extension.Testing/appsettings.json
 Archer.Extension.Testing/appsettings.*.json
-.gitconfig
 
 # User-specific files
 *.suo
