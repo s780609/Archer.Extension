@@ -319,7 +319,7 @@ namespace Archer.Extension
                 description = value.ToString();
             }
 
-            return attribute?.Description ?? value.ToString();
+            return description;
         }
 
         public static string GetDescription(this Type enumType, object value)
@@ -347,7 +347,7 @@ namespace Archer.Extension
                 description = Enum.GetName(enumType, value) ?? value.ToString();
             }
 
-            return attribute?.Description ?? value.ToString() ?? string.Empty;
+            return description;
         }
     }
 }
