@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -299,6 +300,40 @@ namespace Archer.Extension
             startIndex = Math.Min(digit, startIndex);
 
             return target.Substring(startIndex);
+        }
+
+        public static string GetDescription(this Enum value)
+        {
+            FieldInfo field = value.GetType().GetField(value.ToString());
+            if (field == null)
+            {
+                return value.ToString();
+            }
+
+            DescriptionAttribute attribute = field.GetCustomAttribute<DescriptionAttribute>();
+
+            return attribute?.Description ?? value.ToString();
+        }
+
+        public static string GetDescription(this Type enumType, object value)
+        {
+            // 確保是 Enum 類型
+            if (!enumType.IsEnum)
+            {
+                return value.ToString() ?? string.Empty;
+            }
+
+            // 嘗試取得欄位資訊
+            FieldInfo field = enumType.GetField(Enum.GetName(enumType, value) ?? string.Empty);
+            if (field == null)
+            {
+                return value.ToString() ?? string.Empty;
+            }
+
+            // 取得 Description 特性
+            DescriptionAttribute attribute = field.GetCustomAttribute<DescriptionAttribute>();
+
+            return attribute?.Description ?? value.ToString() ?? string.Empty;
         }
     }
 }
