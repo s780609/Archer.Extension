@@ -100,6 +100,7 @@ Some useful extension method
 | function name | paramter type | return type | 
 | --- | --- | --- | 
 | ThrowIfNull | object | Exception? |
+| GetDescription | Enum | string |
 
 example: 
 ```C#
