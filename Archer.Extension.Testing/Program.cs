@@ -6,8 +6,6 @@ using Archer.Extension.JwtHelper;
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using Archer.Extension.Models;
-using System.Drawing;
-using Archer.Extension.Images;
 
 Console.WriteLine("Archer.Extension.Testing Start...");
 
@@ -20,51 +18,6 @@ IConfiguration config = new ConfigurationBuilder()
 var issuer = config.GetValue<string>("JwtSettings:Issuer");
 var aaa = config.GetValue<string>("UBOL_API");
 
-string base64Image = string.Empty;
-using (FileStream fs = new FileStream(@"D:\暫時\未命名.jpg", FileMode.Open, FileAccess.Read))
-{
-    byte[] buffer = new byte[fs.Length];
-    fs.Read(buffer, 0, buffer.Length);
-
-    base64Image = Convert.ToBase64String(buffer);
-}
-
-WatermarkHelper watermarkHelper = new WatermarkHelper();
-
-string[] watermarkImages = watermarkHelper.AddWatermarkToImages(new string[] { base64Image },
-    "僅限聯邦銀行業務使用",
-    new Font(FontFamily.GenericSerif, 150, FontStyle.Bold, GraphicsUnit.Pixel),
-    Color.FromArgb(127, 0, 153, 153),
-    WatermarkPosition.MiddleCenter);
-
-for (int i = 0; i < watermarkImages.Length; i++)
-{
-    byte[] buffer = Convert.FromBase64String(watermarkImages[i]);
-
-    using (FileStream fs = new FileStream($@"D:\暫時\未命名_watermarked_{i}.jpg", FileMode.Create, FileAccess.Write))
-    {
-        fs.Write(buffer, 0, buffer.Length);
-    }
-}
-
-//// 浮水印顏色
-//Color watermarkColor = Color.FromArgb(127, 0, 153, 153);
-
-//// 顏色相似度閾值
-//int threshold = 100;
-
-//string removedResult = watermarkHelper.RemoveWatermark(watermarkImages[0], watermarkColor, threshold);
-
-//byte[] buffer2 = Convert.FromBase64String(removedResult);
-
-//using (FileStream fs2 = new FileStream($@"D:\暫時\未命名_watermarked_removedResult.jpg", FileMode.Create, FileAccess.Write))
-//{
-//    fs2.Write(buffer2, 0, buffer2.Length);
-//}
-
-Console.WriteLine("END");
-Console.ReadLine();
-
 JwtHelper jwtHelper = new JwtHelper(config);
 
 TokenModel tokenModel = new TokenModel();
@@ -74,6 +27,7 @@ tokenModel.Roles = new string[] { "1" };
 tokenModel.NotValidBefore = DateTime.Now;
 tokenModel.IssuedAt = DateTime.Now.AddHours(1);
 tokenModel.ExpirationTime = DateTime.Now.AddHours(1);
+tokenModel.Claims.Add(new System.Security.Claims.Claim("1", "1"));
 
 string token = jwtHelper.GenerateToken(tokenModel);
 

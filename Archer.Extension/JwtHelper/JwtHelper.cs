@@ -46,7 +46,8 @@ namespace Archer.Extension.JwtHelper
             var claims = new List<Claim>
                          {
                              new Claim(JwtRegisteredClaimNames.Iss, issuer),
-                             new Claim(JwtRegisteredClaimNames.Sub, "login"), // User.Identity.Name
+                             // User.Identity.Name
+                             new Claim(JwtRegisteredClaimNames.Sub, "login"),
                              new Claim("employeeName", tokenModel.EmployeeName),
                              new Claim("employeeNo", tokenModel.EmployeeNo),
                          };
@@ -54,6 +55,11 @@ namespace Archer.Extension.JwtHelper
             for (int i = 0; i < tokenModel.Roles.Length; i++)
             {
                 claims.Add(new Claim("roles", tokenModel.Roles[i]));
+            }
+
+            for (int i = 0; i < tokenModel.Claims.Count; i++)
+            {
+                claims.Add(tokenModel.Claims[i].Clone());
             }
 
             var userClaimsIdentity = new ClaimsIdentity(claims);

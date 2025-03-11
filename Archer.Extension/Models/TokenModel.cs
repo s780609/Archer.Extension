@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Archer.Extension.Models
 {
@@ -10,5 +12,6 @@ namespace Archer.Extension.Models
         public DateTime IssuedAt { get; set; } = DateTime.Now;
         public DateTime NotValidBefore { get; set; } = DateTime.Now;
         public DateTime ExpirationTime { get; set; } = DateTime.Now;
+        public List<Claim> Claims { get; set; } = new List<Claim>();
     }
 }
