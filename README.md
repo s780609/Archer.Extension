@@ -48,8 +48,8 @@ string decryptedConnectionString = helper.DecryptConn(encryptedConnectionString)
 ## WatermarkHelper
 命名空間: `Archer.Extension.Images`
 
-| function name | description |
-| --- | --- | --- | --- |
+| function | name | description |
+| --- | --- | --- |
 | AddWatermarkToImages | 給圖片增加浮水印 |
 | RemoveWatermark | [實驗性功能] 移除浮水印 |
 
@@ -95,8 +95,8 @@ using (FileStream fs2 = new FileStream($@"D:\暫時\IMG_0123_watermarked_removed
 
 ## Extension method  
 
-Some useful extension method  
-
+Some useful extension method     
+    
 | function name | paramter type | return type | 
 | --- | --- | --- | 
 | ThrowIfNull | object | Exception? |
