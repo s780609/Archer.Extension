@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Archer.Extension.Models;
 
 namespace Archer.Extension
 {
@@ -348,6 +349,56 @@ namespace Archer.Extension
             }
 
             return description;
+        }
+
+        /// <summary>
+        /// 判斷字串是否為自然人身分證號
+        /// </summary>
+        /// <param name="identityNumber">識別號碼</param>
+        /// <returns>是否為自然人</returns>
+        public static bool IsNaturalPerson(this string identityNumber)
+        {
+            return IdentityHelper.DetermineEntityType(identityNumber) == EntityType.NaturalPerson;
+        }
+
+        /// <summary>
+        /// 判斷字串是否為法人統一編號
+        /// </summary>
+        /// <param name="identityNumber">識別號碼</param>
+        /// <returns>是否為法人</returns>
+        public static bool IsLegalEntity(this string identityNumber)
+        {
+            return IdentityHelper.DetermineEntityType(identityNumber) == EntityType.LegalEntity;
+        }
+
+        /// <summary>
+        /// 取得識別號碼對應的實體類型
+        /// </summary>
+        /// <param name="identityNumber">識別號碼</param>
+        /// <returns>實體類型</returns>
+        public static EntityType GetEntityType(this string identityNumber)
+        {
+            return IdentityHelper.DetermineEntityType(identityNumber);
+        }
+
+        /// <summary>
+        /// 驗證身分證號格式
+        /// </summary>
+        /// <param name="nationalId">身分證號</param>
+        /// <returns>是否為有效格式</returns>
+        public static bool IsValidNationalId(this string nationalId)
+        {
+            return IdentityHelper.IsValidNationalId(nationalId);
+        }
+
+        /// <summary>
+        /// 驗證統一編號格式
+        /// </summary>
+        /// <param name="businessNumber">統一編號</param>
+        /// <returns>是否為有效格式</returns>
+        public static bool IsValidBusinessNumber(this string businessNumber)
+        {
+            return IdentityHelper.IsValidBusinessRegistrationNumber(businessNumber);
         }
     }
 }
