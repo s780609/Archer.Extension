@@ -1,53 +1,47 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Archer.Extension;
-using Archer.Extension.DatabaseHelper;
-using Archer.Extension.SecurityHelper;
-using Archer.Extension.JwtHelper;
-using System.Data;
-using Microsoft.Extensions.Configuration;
 using Archer.Extension.Models;
 
 Console.WriteLine("Archer.Extension.Testing Start...");
 
-Test.BottomLeft.GetDescription();
+// 測試自然人法人判斷功能
+Console.WriteLine("\n=== 自然人法人判斷測試 ===");
 
-IConfiguration config = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .Build();
+// 測試身分證號（自然人）
+string[] testNationalIds = { "A123456789", "F131232899", "B227549687" };
+foreach (var id in testNationalIds)
+{
+    var entityType = id.GetEntityType();
+    var isNatural = id.IsNaturalPerson();
+    var isValid = id.IsValidNationalId();
+    Console.WriteLine($"身分證號 {id}: {entityType.GetDescription()}, 是自然人: {isNatural}, 格式有效: {isValid}");
+}
 
-var issuer = config.GetValue<string>("JwtSettings:Issuer");
-var aaa = config.GetValue<string>("UBOL_API");
+// 測試統一編號（法人）
+string[] testBusinessIds = { "12345678", "53212539", "70759642" };
+foreach (var id in testBusinessIds)
+{
+    var entityType = id.GetEntityType();
+    var isLegal = id.IsLegalEntity();
+    var isValid = id.IsValidBusinessNumber();
+    Console.WriteLine($"統一編號 {id}: {entityType.GetDescription()}, 是法人: {isLegal}, 格式有效: {isValid}");
+}
 
-JwtHelper jwtHelper = new JwtHelper(config);
+// 測試無效格式
+string[] testInvalidIds = { "invalid", "123", "", null };
+foreach (var id in testInvalidIds)
+{
+    var entityType = id.GetEntityType();
+    Console.WriteLine($"無效識別號 '{id}': {entityType.GetDescription()}");
+}
 
-TokenModel tokenModel = new TokenModel();
-tokenModel.EmployeeNo = "totalwar";
-tokenModel.EmployeeName = "WhosYourDaddy";
-tokenModel.Roles = new string[] { "1" };
-tokenModel.NotValidBefore = DateTime.Now;
-tokenModel.IssuedAt = DateTime.Now.AddHours(1);
-tokenModel.ExpirationTime = DateTime.Now.AddHours(1);
-tokenModel.Claims.Add(new System.Security.Claims.Claim("1", "1"));
+// 使用IdentityHelper類別的直接方法測試
+Console.WriteLine("\n=== 直接使用IdentityHelper測試 ===");
+Console.WriteLine($"直接調用 IdentityHelper.DetermineEntityType('A123456789'): {IdentityHelper.DetermineEntityType("A123456789").GetDescription()}");
+Console.WriteLine($"直接調用 IdentityHelper.IsValidNationalId('A123456789'): {IdentityHelper.IsValidNationalId("A123456789")}");
+Console.WriteLine($"直接調用 IdentityHelper.IsValidBusinessRegistrationNumber('12345678'): {IdentityHelper.IsValidBusinessRegistrationNumber("12345678")}");
 
-string token = jwtHelper.GenerateToken(tokenModel);
-
-bool a = jwtHelper.ValidateToken(token);
-
-const string keyConn = "AAA";
-const string ivConn = "BBB";
-const string keyData = "CCC";
-const string ivData = "DDD";
-SecurityHelper securityHelper = new SecurityHelper(keyConn, ivConn, keyData, ivData);
-
-DatabaseHelper databaseHelper = new DatabaseHelper(securityHelper);
-
-IDbConnection dbConnection = databaseHelper.CreateIDbConnection("EEE");
-
-Loan loan = new Loan();
-
-var propsname = loan.GetPropsName();
-var propsvalue = loan.GetPropsValue();
-
+Console.WriteLine("\n測試完成！按任意鍵退出...");
 Console.ReadLine();
 
 public class Loan

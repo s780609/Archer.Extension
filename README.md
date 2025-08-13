@@ -9,6 +9,37 @@ NUGET package | UITC每個專案都會用的方法獨立出來放這
 using Archer.Extension
 ```
 
+## IdentityHelper
+自然人與法人身分識別工具
+
+| function name | paramter type | return type | description |
+| --- | --- | --- | --- |
+| DetermineEntityType | string | EntityType | 判斷身分證號或統一編號屬於自然人還是法人 |
+| IsValidNationalId | string | bool | 驗證台灣身分證號格式及檢查碼 |
+| IsValidBusinessRegistrationNumber | string | bool | 驗證台灣統一編號格式及檢查碼 |
+
+EntityType enum:
+- `NaturalPerson` (自然人)
+- `LegalEntity` (法人)  
+- `Unknown` (未知或無效)
+
+extension methods:
+```C#
+string nationalId = "A123456789";
+string businessId = "53212539";
+
+// 使用extension methods
+bool isNatural = nationalId.IsNaturalPerson();
+bool isLegal = businessId.IsLegalEntity();
+EntityType type = nationalId.GetEntityType();
+bool validNationalId = nationalId.IsValidNationalId();
+bool validBusinessId = businessId.IsValidBusinessNumber();
+
+// 使用靜態方法
+EntityType type2 = IdentityHelper.DetermineEntityType("A123456789");
+bool valid = IdentityHelper.IsValidNationalId("A123456789");
+```
+
 ## Security helper
 an encrypting and decryting helper
 
@@ -101,8 +132,18 @@ Some useful extension method
 | --- | --- | --- | 
 | ThrowIfNull | object | Exception? |
 | GetDescription | Enum | string |
+| IsNaturalPerson | string | bool |
+| IsLegalEntity | string | bool |
+| GetEntityType | string | EntityType |
+| IsValidNationalId | string | bool |
+| IsValidBusinessNumber | string | bool |
 
 example: 
 ```C#
 users.ThrowIfNull(nameof(users));
+
+// 自然人法人判斷
+string id = "A123456789";
+bool isNatural = id.IsNaturalPerson();  // True
+EntityType type = id.GetEntityType();   // EntityType.NaturalPerson
 ```
