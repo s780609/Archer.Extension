@@ -23,8 +23,7 @@ Always reference these instructions first and fallback to search or bash command
     "Audience": "https://example.com",
     "SignKey": "this-is-a-very-long-secret-key-for-jwt-token-signing-purpose-only",
     "ExpireInMinutes": 60
-  },
-  "UBOL_API": "https://test-api.example.com"
+  }
 }
 ```
 - Run with: `dotnet run --project Archer.Extension.Testing`
